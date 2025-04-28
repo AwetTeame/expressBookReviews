@@ -12,12 +12,12 @@ public_users.post("/register", (req,res) => {
     //Check if the both the username and password are provided
     if(username && password) {
         //Check if the user doesn't exist
-        if(!isValid) {
+        if(!isValid(username)) {
             //Add the new user
             users.push({"username": username, "password": password})
-            res.status.json({ message: "The user is successfuly registered." });
+            return res.status(200).json({ message: "The user is successfuly registered." });
         } else {
-            res.status(404).json({ message: "The user already exists!" });
+            return res.status(404).json({ message: "The user already exists!" });
         }
     }
 
