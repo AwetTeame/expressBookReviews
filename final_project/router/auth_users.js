@@ -63,20 +63,32 @@ regd_users.post("/login", (req,res) => {
 // Add a book review
 regd_users.put("/auth/review/:isbn", (req, res) => {
   const username = req.session.username;
-  const isbn = req.params.isbn
-  const review = req.body.review
+  const isbn = req.params.isbn;
+  const review = req.body.review;
 
     if(!review) {
-        return res.status(404).json({ message: "Review text is required." })
+        return res.status(404).json({ message: "Review text is required." });
     }
 
     if(!books[isbn]) {
-        return res.status(404).json({ message: "The book with " + isbn +" isbn is not found." })
+        return res.status(404).json({ message: "The book with " + isbn +" isbn is not found." });
     }
 
     books[isbn].reviews[username] = review;
-    res.status(200).json({ message: "The review " +  books[isbn].reviews[username] + " is added."})
+    res.status(200).json({ message: "The review " +  books[isbn].reviews[username] + " is added."});
 });
+
+regd_users.delete("/auth/review/:isbn", (req, res) => {
+    const username = req.session.username;
+    const isbn = req.params.isbn;
+
+    if(!books[isbn].reviews[username]) {
+        return res.status(404).json({ message: "There is no commet of this user." })
+    }
+
+    delete books[isbn].reviews[username]
+    return res.status(200).json({ message: "Comment is successfully delete."})
+})
 
 module.exports.authenticated = regd_users;
 module.exports.isValid = isValid;
