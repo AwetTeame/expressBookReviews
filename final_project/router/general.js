@@ -25,10 +25,15 @@ public_users.post("/register", (req,res) => {
     res.status(404).json({ message: "Unable to register the user." });
 });
 
+function delay(ms) {
+    return new Promise(resolve => setTimeout(resolve, ms))
+}
+
 // Get the book list available in the shop
-public_users.get('/',function (req, res) {
-  //Write your code here
-  res.send(JSON.stringify(books, null, 4));
+public_users.get('/',async function (req, res) {
+    //Get books with await with simulated delay
+    await delay(6000);
+    res.send(JSON.stringify(books, null, 4));
 });
 
 // Get book details based on ISBN
